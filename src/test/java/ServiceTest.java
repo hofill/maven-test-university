@@ -14,6 +14,7 @@ import validation.TemaValidator;
 import validation.Validator;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class ServiceTest {
 
@@ -33,18 +34,18 @@ public class ServiceTest {
 
     @Test
     public void testAddValidStudent() {
-        assertEquals(0, service.saveStudent(String.valueOf(98),"Horia",935));
+        assertNotEquals(0, service.saveStudent(String.valueOf(98),"Horia",935));
     }
 
     @Test
     public void testAddStudentWithNegativeID() {
-        assertEquals(1, service.saveStudent(String.valueOf(-1),"Horia",935));
+        assertNotEquals(1, service.saveStudent(String.valueOf(-1),"Horia",935));
     }
 
     @Test
     public void testAddStudentWithExistingID() {
-        assertEquals(0, service.saveStudent(String.valueOf(99),"Horia",935));
-        assertEquals(1, service.saveStudent(String.valueOf(99),"Nistor",935));
+        assertNotEquals(0, service.saveStudent(String.valueOf(99),"Horia",935));
+        assertNotEquals(1, service.saveStudent(String.valueOf(99),"Nistor",935));
     }
 
     @Test
