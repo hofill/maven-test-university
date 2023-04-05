@@ -34,18 +34,18 @@ public class ServiceTest {
 
     @Test
     public void testAddValidStudent() {
-        assertNotEquals(0, service.saveStudent(String.valueOf(98),"Horia",935));
+        assertEquals(0, service.saveStudent(String.valueOf(98),"Horia",935));
     }
 
     @Test
     public void testAddStudentWithNegativeID() {
-        assertNotEquals(1, service.saveStudent(String.valueOf(-1),"Horia",935));
+        assertEquals(1, service.saveStudent(String.valueOf(-1),"Horia",935));
     }
 
     @Test
     public void testAddStudentWithExistingID() {
-        assertNotEquals(0, service.saveStudent(String.valueOf(99),"Horia",935));
-        assertNotEquals(1, service.saveStudent(String.valueOf(99),"Nistor",935));
+        assertEquals(0, service.saveStudent(String.valueOf(99),"Horia",935));
+        assertEquals(1, service.saveStudent(String.valueOf(99),"Nistor",935));
     }
 
     @Test
