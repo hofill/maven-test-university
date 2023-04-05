@@ -78,10 +78,22 @@ public class ServiceTest {
         assertEquals(1, service.saveStudent(String.valueOf(98),"Horia",938));
     }
 
+    @Test
+    public void testAddValidTema() {
+        assertEquals(0, service.saveTema(String.valueOf(98),"tema 1",5, 2));
+    }
+
+    @Test
+    public void testAddInvalidTema() {
+        assertEquals(1, service.saveTema(String.valueOf(98),"tema 1",15, 2));
+    }
+
     @After
     public void cleanUp() {
         service.deleteStudent("98");
         service.deleteStudent("99");
+        service.deleteTema("98");
+        service.deleteTema("99");
     }
 
 }
