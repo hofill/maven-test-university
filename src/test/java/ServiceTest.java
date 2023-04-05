@@ -3,8 +3,7 @@ import domain.Student;
 import domain.Tema;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import repository.NotaXMLRepository;
 import repository.StudentXMLRepository;
 import repository.TemaXMLRepository;
@@ -14,9 +13,9 @@ import validation.StudentValidator;
 import validation.TemaValidator;
 import validation.Validator;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static junit.framework.TestCase.assertEquals;
 
-class ServiceTest {
+public class ServiceTest {
 
     // create 2 tests for saving a student
     // one test should pass, the other should fail
@@ -24,8 +23,8 @@ class ServiceTest {
     // the test that passes should return 1
 
     static Service service;
-    @BeforeAll
-    public static void init(){
+    @Before
+    public void init(){
         TemaXMLRepository fileRepository1 = new TemaXMLRepository(new TemaValidator(), "teme.xml");
         StudentXMLRepository fileRepository2 = new StudentXMLRepository(new StudentValidator(), "studenti.xml");
         NotaXMLRepository fileRepository3 = new NotaXMLRepository(new NotaValidator(), "note.xml");
