@@ -3,6 +3,7 @@ import domain.Student;
 import domain.Tema;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import repository.NotaXMLRepository;
 import repository.StudentXMLRepository;
@@ -22,41 +23,15 @@ class ServiceTest {
     // the test that fails should throw an exception
     // the test that passes should return 1
 
-    private StudentXMLRepository studentXmlRepo;
-    private TemaXMLRepository temaXmlRepo;
-    private NotaXMLRepository notaXmlRepo;
-
-    @Test
-    void saveStudent() {
-        // create a service
-        // call saveStudent
-        // assert that the result is 1
-
-        Service service = new Service(studentXmlRepo, temaXmlRepo, notaXmlRepo);
-        int result = service.saveStudent("1", "name", 1);
-        assertEquals(1, result);
-
-    }
-
-    @Test
-    void saveStudentFail() {
-        // create a service
-        // call saveStudent
-        // assert that the result is 1
-
-        Service service = new Service(studentXmlRepo, temaXmlRepo, notaXmlRepo);
-        int result = service.saveStudent("1", "name", 1);
-        assertEquals(0, result);
-    }
-
-    Service service;
-    @Before
-    public void init(){
+    static Service service;
+    @BeforeAll
+    public static void init(){
         TemaXMLRepository fileRepository1 = new TemaXMLRepository(new TemaValidator(), "teme.xml");
         StudentXMLRepository fileRepository2 = new StudentXMLRepository(new StudentValidator(), "studenti.xml");
         NotaXMLRepository fileRepository3 = new NotaXMLRepository(new NotaValidator(), "note.xml");
         service = new Service(fileRepository2, fileRepository1, fileRepository3);
     }
+
     @Test
     public void testAddValidStudent() {
         assertEquals(0, service.saveStudent(String.valueOf(98),"Horia",935));
