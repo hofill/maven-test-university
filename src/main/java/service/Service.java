@@ -45,7 +45,7 @@ public class Service {
         return 0;
     }
 
-    public int saveNota(String idStudent, String idTema, double valNota, int predata, String feedback) {
+    public int saveNota(String idStudent, String idTema, double valNota, int predata, String feedback) throws ValidationException {
         if (studentXmlRepo.findOne(idStudent) == null || temaXmlRepo.findOne(idTema) == null) {
             return -1;
         }
@@ -54,7 +54,7 @@ public class Service {
 
             if (predata - deadline > 2) {
                 valNota =  1;
-            } else {
+            } else if (predata > deadline) {
                 valNota =  valNota - 2.5 * (predata - deadline);
             }
             Nota nota = new Nota(new Pair(idStudent, idTema), valNota, predata, feedback);

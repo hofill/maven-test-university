@@ -109,6 +109,46 @@ public class ServiceTest {
         assertEquals(1, service.saveTema(String.valueOf(99), "tema 2", 5, 2));
     }
 
+    @Test
+    public void testBigBang() {
+        testAddStudentBigBang();
+        testAddAssignmentBigBang();
+        service.saveTema(String.valueOf(98), "tema 1", 5, 2);
+        service.saveStudent(String.valueOf(98), "Horia", 935);
+        testAddGradeBigBang();
+        service.deleteStudent("98");
+        service.deleteTema("98");
+    }
+
+
+    @Test
+    public void testAddStudentBigBang() {
+        assertEquals(0, service.saveStudent(String.valueOf(98), "Horia", 935));
+        assertEquals(0, service.saveStudent(String.valueOf(99), "Horia", 935));
+        assertEquals(1, service.saveStudent(String.valueOf(99), "Nistor", 935));
+        assertThrows(ValidationException.class, () -> service.saveStudent("", "Horia", 935));
+        assertThrows(ValidationException.class, () -> service.saveStudent(null, "Horia", 935));
+        assertThrows(ValidationException.class, () -> service.saveStudent(String.valueOf(98), "", 935));
+        assertThrows(ValidationException.class, () -> service.saveStudent(String.valueOf(98), null, 935));
+    }
+
+    @Test
+    public void testAddGradeBigBang() {
+        assertEquals(1, service.saveNota(String.valueOf(98), String.valueOf(98), 10, 2, "feedback"));
+        assertEquals(1, service.saveNota(String.valueOf(98), String.valueOf(98), 10, 2, "feedback"));
+        assertThrows(IllegalArgumentException.class, () -> service.saveNota(null, String.valueOf(98), 10, 2, "feedback"));
+    }
+
+    @Test
+    public void testAddAssignmentBigBang() {
+        assertEquals(0, service.saveTema(String.valueOf(98), "tema 1", 5, 2));
+        assertEquals(1, service.saveTema(String.valueOf(98), "tema 2", 5, 2));
+        assertThrows(ValidationException.class, () -> service.saveTema(String.valueOf(98), "", 5, 2));
+        assertThrows(ValidationException.class, () -> service.saveTema(String.valueOf(98), "tema 1", 15, 2));
+        assertThrows(ValidationException.class, () -> service.saveTema(String.valueOf(98), "tema 1", 5, 15));
+    }
+
+
     @After
     public void cleanUp() {
         service.deleteStudent("98");
