@@ -2,6 +2,7 @@ package service;
 
 import domain.*;
 import repository.*;
+import validation.ValidationException;
 
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
@@ -34,7 +35,7 @@ public class Service {
         return 0;
     }
 
-    public int saveTema(String id, String descriere, int deadline, int startline) {
+    public int saveTema(String id, String descriere, int deadline, int startline) throws ValidationException {
         Tema tema = new Tema(id, descriere, deadline, startline);
         Tema result = temaXmlRepo.save(tema);
 

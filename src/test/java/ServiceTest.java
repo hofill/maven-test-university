@@ -8,13 +8,11 @@ import repository.NotaXMLRepository;
 import repository.StudentXMLRepository;
 import repository.TemaXMLRepository;
 import service.Service;
-import validation.NotaValidator;
-import validation.StudentValidator;
-import validation.TemaValidator;
-import validation.Validator;
+import validation.*;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThrows;
 
 public class ServiceTest {
 
@@ -24,8 +22,9 @@ public class ServiceTest {
     // the test that passes should return 1
 
     static Service service;
+
     @Before
-    public void init(){
+    public void init() {
         TemaXMLRepository fileRepository1 = new TemaXMLRepository(new TemaValidator(), "teme.xml");
         StudentXMLRepository fileRepository2 = new StudentXMLRepository(new StudentValidator(), "studenti.xml");
         NotaXMLRepository fileRepository3 = new NotaXMLRepository(new NotaValidator(), "note.xml");
@@ -34,58 +33,72 @@ public class ServiceTest {
 
     @Test
     public void testAddValidStudent() {
-        assertEquals(0, service.saveStudent(String.valueOf(98),"Horia",935));
+        assertEquals(0, service.saveStudent(String.valueOf(98), "Horia", 935));
     }
 
     @Test
     public void testAddStudentWithNegativeID() {
-        assertEquals(1, service.saveStudent(String.valueOf(-1),"Horia",935));
+        assertEquals(1, service.saveStudent(String.valueOf(-1), "Horia", 935));
     }
 
     @Test
     public void testAddStudentWithExistingID() {
-        assertEquals(0, service.saveStudent(String.valueOf(99),"Horia",935));
-        assertEquals(1, service.saveStudent(String.valueOf(99),"Nistor",935));
+        assertEquals(0, service.saveStudent(String.valueOf(99), "Horia", 935));
+        assertEquals(1, service.saveStudent(String.valueOf(99), "Nistor", 935));
     }
 
     @Test
     public void testAddStudentWithEmptyID() {
-        assertEquals(1, service.saveStudent("","Horia",935));
+        assertThrows(ValidationException.class, () -> service.saveStudent("", "Horia", 935));
     }
 
     @Test
     public void testAddStudentWithNullID() {
-        assertEquals(1, service.saveStudent(null,"Horia",935));
+        assertThrows(ValidationException.class, () -> service.saveStudent(null, "Horia", 935));
     }
 
     @Test
     public void testAddStudentWithEmptyName() {
-        assertEquals(1, service.saveStudent(String.valueOf(98),"",935));
+        assertThrows(ValidationException.class, () -> service.saveStudent(String.valueOf(98), "", 935));
     }
 
     @Test
     public void testAddStudentWithInvalidName() {
-        assertEquals(1, service.saveStudent(String.valueOf(98),null,935));
+        assertThrows(ValidationException.class, () -> service.saveStudent(String.valueOf(98), null, 935));
     }
 
     @Test
     public void testAddStudentWithGroupToSmall() {
-        assertEquals(1, service.saveStudent(String.valueOf(98),"Horia",110));
+        assertThrows(ValidationException.class, () -> service.saveStudent(String.valueOf(98), "Horia", 110));
     }
 
     @Test
     public void testAddStudentWithGroupToBig() {
-        assertEquals(1, service.saveStudent(String.valueOf(98),"Horia",938));
+        assertThrows(ValidationException.class, () -> service.saveStudent(String.valueOf(98), "Horia", 938));
     }
 
     @Test
     public void testAddValidTema() {
-        assertEquals(0, service.saveTema(String.valueOf(98),"tema 1",5, 2));
+        assertEquals(0, service.saveTema(String.valueOf(98), "tema 1", 5, 2));
     }
 
     @Test
     public void testAddInvalidTema() {
-        assertEquals(1, service.saveTema(String.valueOf(98),"tema 1",15, 2));
+        // assert throws ValidationException
+        assertThrows(ValidationException.class, () -> {
+            service.saveTema(String.valueOf(98), "tema 1", 15, 2);
+        });
+    }
+
+    @Test
+    public void testAddTemaWithNegativeID() {
+        assertThrows(ValidationException.class, () -> service.saveTema(String.valueOf(-1), "tema 1", 5, 2));
+    }
+
+    @Test
+    public void testAddTemaWithExistingID() {
+        assertEquals(0, service.saveTema(String.valueOf(99), "tema 1", 5, 2));
+        assertEquals(1, service.saveTema(String.valueOf(99), "tema 2", 5, 2));
     }
 
     @After
