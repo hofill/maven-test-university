@@ -91,6 +91,14 @@ public class ServiceTest {
     }
 
     @Test
+    public void testAddTemaInvalidDescription() {
+        // assert throws ValidationException
+        assertThrows(ValidationException.class, () -> {
+            service.saveTema(String.valueOf(98), "", 5, 2);
+        });
+    }
+
+    @Test
     public void testAddTemaWithNegativeID() {
         assertThrows(ValidationException.class, () -> service.saveTema(String.valueOf(-1), "tema 1", 5, 2));
     }
