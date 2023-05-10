@@ -1,6 +1,3 @@
-import domain.Nota;
-import domain.Student;
-import domain.Tema;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,9 +6,11 @@ import repository.StudentXMLRepository;
 import repository.TemaXMLRepository;
 import service.Service;
 import validation.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThrows;
 
 public class ServiceTest {
@@ -22,6 +21,9 @@ public class ServiceTest {
     // the test that passes should return 1
 
     static Service service;
+    private StudentXMLRepository studentXMLRepository = mock(StudentXMLRepository.class);
+    private TemaXMLRepository temaXMLRepository = mock(TemaXMLRepository.class);
+    private NotaXMLRepository notaXMLRepository = mock(NotaXMLRepository.class);
 
     @Before
     public void init() {
@@ -144,6 +146,32 @@ public class ServiceTest {
         assertThrows(ValidationException.class, () -> service.saveTema(String.valueOf(98), "tema 1", 5, 15));
     }
 
+    @Test
+    public void TaddStudent() {
+        service = new Service(studentXMLRepository, temaXMLRepository, notaXMLRepository);
+        when(studentXMLRepository.save(any())).thenReturn(null);
+        service.saveStudent("1", "name", 935);
+    }
+
+    @Test
+    public void TaddAssignment() {
+        service = new Service(studentXMLRepository, temaXMLRepository, notaXMLRepository);
+        when(temaXMLRepository.save(any())).thenReturn(null);
+        when(studentXMLRepository.save(any())).thenReturn(null);
+        service.saveStudent("2", "name", 935);
+        service.saveTema(String.valueOf(31), "Tema 1", 8, 7);
+    }
+
+    @Test
+    public void TaddGrade() {
+        service = new Service(studentXMLRepository, temaXMLRepository, notaXMLRepository);
+        when(temaXMLRepository.save(any())).thenReturn(null);
+        when(studentXMLRepository.save(any())).thenReturn(null);
+        when(notaXMLRepository.save(any())).thenReturn(null);
+        service.saveStudent("3", "name", 935);
+        service.saveTema(String.valueOf(32), "Tema 1", 8, 7);
+        service.saveNota(String.valueOf(3), String.valueOf(32), 7.8, 10, "feedback");
+    }
 
     @After
     public void cleanUp() {
